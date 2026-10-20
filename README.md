@@ -2,7 +2,6 @@
 
 # HeapLab
 
-**Voir ce qui se passe réellement entre `malloc()` et `free()`.**
 
 Exploration visuelle du heap, simulation de scénarios C/C++, inspection des chunks et traçage ELF sous Linux.
 
