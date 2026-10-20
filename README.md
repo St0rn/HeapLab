@@ -14,8 +14,6 @@ Exploration visuelle du heap, simulation de scénarios C/C++, inspection des chu
 
 ---
 
-### Un débordement, octet par octet
-
 ![HeapLab — visualisation d'un heap overflow et de chunks corrompus](assets/screenshots/debordement-heap.png)
 
 <sub>Capture réelle de HeapLab : trois allocations de 32 octets, écritures de 50 octets, corruption des en-têtes B/C et arrêt simulé au premier `free()` invalide.</sub>
