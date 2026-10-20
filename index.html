@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HeapLab — St0rn · Cybersecur’IT</title>
+<style>
+:root{color-scheme:dark;--bg:#090f19;--panel:#101b2a;--card:#132237;--line:#263a50;--muted:#91a7bd;--text:#eff7ff;--cyan:#4bdde5;--green:#77ddb0;--amber:#ffd083;--red:#ff8089;--blue:#87aefa}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0,#153047 0,transparent 35%),var(--bg);color:var(--text);font:14px/1.5 system-ui,Segoe UI,Arial}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:21px 28px;border-bottom:1px solid var(--line);background:#0b1522bb}.brand{display:flex;align-items:center;gap:13px}.brand b{font-size:25px;letter-spacing:-.7px}.mark{border:1px solid #5ee6ff55;color:var(--cyan);border-radius:12px;padding:8px 12px;font:700 20px Consolas,monospace;background:#4bdde50b}small,.muted{color:var(--muted)}.pill{color:var(--green);border:1px solid #77ddb055;border-radius:99px;padding:6px 13px;font-size:12px;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(340px,450px) minmax(0,1fr);min-height:calc(100vh - 85px)}aside{border-right:1px solid var(--line);background:#0d1724;padding:22px;max-height:calc(100vh - 85px);overflow-y:auto}main{min-width:0;padding:24px 28px 40px}.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 13px}h2{font-size:16px;margin:0;letter-spacing:.1px}h3{font-size:14px;margin:0 0 12px}p{margin:8px 0 12px}.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}.tab{border:1px solid var(--line);background:transparent;color:var(--muted);padding:8px 12px;border-radius:8px;cursor:pointer}.tab.active{background:#173c4d;border-color:#4bdde566;color:#d6ffff}.view{display:none}.view.active{display:block}label{display:block;color:#b5cbe0;margin:14px 0 6px;font-size:12px;font-weight:650;letter-spacing:.2px}textarea,input,select{width:100%;background:#07111d;border:1px solid #2a405a;border-radius:9px;color:#dff9ff;padding:12px;outline:none;font:12.5px/1.55 Consolas,'Cascadia Code',monospace;resize:vertical}textarea:focus,input:focus,select:focus{border-color:var(--cyan)}textarea{min-height:345px}select{cursor:pointer}#sourceStdin{min-height:78px}#sourceFile{padding:8px}.mono{font-family:Consolas,'Cascadia Code',monospace}.runrow{display:flex;gap:8px;margin:13px 0}button{border:1px solid #385269;background:#16293e;color:var(--text);border-radius:9px;padding:10px 14px;font-weight:650;cursor:pointer}button:hover{background:#20405c}button.primary{background:#0da4b2;color:#031b25;border-color:#45dde9}button:disabled{opacity:.4;cursor:not-allowed}.note{padding:12px 14px;border-left:3px solid var(--amber);background:#28241955;color:#dfcfae;font-size:12px;border-radius:5px;margin-top:14px}.help{color:var(--muted);font-size:12px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{border:1px solid var(--line);background:#101f30;border-radius:12px;padding:15px}.metric .val{font-size:26px;font-weight:750;font-variant-numeric:tabular-nums}.metric .label{color:var(--muted);font-size:12px}.timeline{margin-top:22px;background:#0e1c2a;border:1px solid var(--line);padding:16px;border-radius:12px}.timeline-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.timeline input{accent-color:var(--cyan);width:100%;cursor:pointer;padding:0;margin:15px 0 5px}.stepdesc{font:12.5px/1.6 Consolas,monospace;color:#c5ecff;min-height:20px}.canvasbar{margin:26px 0 12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}.legend{display:flex;gap:14px;color:var(--muted);font-size:11px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.chunks{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch}.chunk{border:1px solid #397084;border-radius:10px;min-width:160px;flex:1 1 190px;max-width:340px;background:#102736;overflow:hidden}.chunk.freed{border-color:#896f4b;background:#262317}.chunk.bad{border-color:#d66873;background:#32222b}.chunk .top{padding:9px 12px;background:#1c4356;display:flex;justify-content:space-between;gap:5px}.chunk.freed .top{background:#55472c}.chunk.bad .top{background:#693b46}.chunk .inner{padding:11px 12px}.chunk .sizes{font-size:12px;color:#b7d0e3}.chunk .payload{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;background:#081521;padding:8px;border-radius:6px;min-height:43px;color:#7fd7e8;font:12px/1.45 Consolas,monospace;margin-top:9px}.chunk .hex{color:#a1b2c9;font-size:10.5px;overflow-wrap:anywhere;margin-top:8px}.chunk .foot{font-size:11px;color:#afc3d8;margin-top:8px}.warn{background:#35202a;border:1px solid #8f4557;color:#ffc2c8;border-radius:10px;padding:11px 13px;margin:9px 0}.info{background:#162535;border:1px solid #344a60;border-radius:10px;padding:11px 13px;color:#c0d8e6;margin:9px 0}.ok{background:#152d2a;border:1px solid #2a6258;color:#b2e9d8;border-radius:10px;padding:11px 13px;margin:9px 0}.resultgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:25px}.panel{background:#0e1b2a;border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}.events{max-height:280px;overflow-y:auto}.event{display:flex;gap:10px;padding:7px 3px;border-bottom:1px solid #243649;align-items:start;font-size:12px}.event .idx{color:var(--cyan);font:12px Consolas,monospace;min-width:24px}.event.active{background:#183342}.mini{font-size:11px;color:var(--muted)}.banner{margin-top:18px;padding:13px;background:#132331;border:1px solid #2c4961;border-radius:9px}.hypo{border:1px solid #425371;background:#172535;border-radius:9px;padding:11px;margin:8px 0;font-size:12px}.tag{font-size:10px;border:1px solid #48617e;border-radius:10px;padding:2px 7px;color:#abc7e0}.copy{margin:9px 0 0;padding:6px 10px;font-size:11px}.lines{white-space:pre-wrap;font:11.5px/1.7 Consolas,monospace}.shortarea{min-height:98px}.permission{display:flex;align-items:flex-start;gap:9px;border:1px solid #41516a;padding:10px;border-radius:8px;line-height:1.4;background:#1b2938}.permission input{width:auto;margin:2px 0;accent-color:var(--cyan)}.terminal{max-height:280px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.55 Consolas,monospace;color:#aed6de;background:#08131e;padding:12px;border-radius:8px}.nativebadge{background:#163e3d}.filebox{border:1px dashed #516b80;padding:15px;border-radius:10px;margin:12px 0}.footer{font-size:11px;color:#7896aa;margin-top:32px;border-top:1px solid var(--line);padding-top:14px}::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:#2c465b;border-radius:10px}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line);max-height:none}main{padding:18px}.metrics{grid-template-columns:repeat(2,1fr)}.resultgrid{grid-template-columns:1fr}}@media(max-width:500px){header{padding:13px}aside{padding:15px}.pill{display:none}.metrics{gap:7px}.metric .val{font-size:21px}}
+
+/* Inspection du heap - palette fidèle au thème */
+.structoverview{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}
+.structtile{border:1px solid #456178;border-radius:10px;background:#0b1b29;padding:9px;flex:1 1 170px;text-align:left;min-width:165px;max-width:260px;cursor:pointer}
+.structtile:hover,.structtile.active{outline:2px solid #49d5e4;background:#132b3e}
+.structtile strong{display:block;color:#e9faff}
+.structtile small{display:block;font:11px/1.5 Consolas,monospace;color:#aec5d8}
+.structtile .cells{display:flex;margin:8px 0;gap:3px;height:11px}
+.structtile .cells span{border-radius:3px;flex:1}
+.c-prev{background:#53697f}.c-size{background:#49d5e4}.c-data{background:#74c8a4}.c-free{background:#ffc77d}.c-damaged{background:#ff7c8d!important}
+.structdetail{overflow-x:auto}
+.structdetails{display:grid;grid-template-columns:minmax(150px,1fr) minmax(150px,1fr);gap:10px}
+.structdetails >div{background:#0a1825;border:1px solid #2d4b60;padding:10px;border-radius:8px;min-width:0}
+.structdetails strong{font:600 12px system-ui;display:block;margin-bottom:4px}
+.structdetails code{display:block;color:#bfe3ec;word-break:break-all;font:12px/1.4 Consolas,monospace}
+.structcorrupt{border-color:#bf5565!important;background:#34232d!important}
+.structhex{font:11px/1.7 Consolas,monospace;word-break:break-all;background:#081522;padding:12px;border-radius:8px;white-space:pre-wrap}
+.structhex mark{background:#9f4357;color:white;border-radius:3px;padding:1px}
+.structstep{margin:12px 0;background:#101f30;border-left:3px solid #4bdde5;padding:9px 12px;font-size:12px}
+.tcachebins{margin-top:15px}
+.binrow{border:1px solid #3c566a;border-radius:8px;background:#112437;padding:10px;margin-top:7px;font:12px Consolas,monospace;word-break:break-word}
+@media(max-width:570px){.structdetails{grid-template-columns:1fr}}
+</style>
+</head><body>
+<header><div class="brand"><span class="mark">{ }</span><div><b>HeapLab</b><div class="muted" style="font-size:12px">Heap analysis · by St0rn / Cybersecur’IT</div></div></div><span class="pill">C / C++ · SIMULATION · ELF TRACING</span></header>
+<div class="layout"><aside>
+<div class="sectionhead"><h2>Entrée d'analyse</h2><span class="tag">Traitement local</span></div>
+<div class="tabs"><button class="tab active" data-tab="source">Code C / C++</button><button class="tab" data-tab="options">Options CLI</button><button class="tab" data-tab="script">Scénario</button><button class="tab" data-tab="trace">Trace JSON</button><button class="tab" data-tab="elf">Binaire ELF</button></div>
+<section class="view active" id="source"><label for="sourcecode">Code source C / C++ à analyser (sans l’exécuter)</label><textarea id="sourcecode" spellcheck="false">#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char **argv) {
+    char *user = malloc(24);
+    char *backup = malloc(32);
+    strcpy(user, argv[1]);
+    free(user);
+    char *reuse = malloc(16);
+    strcpy(reuse, "OK");
+    free(backup);
+    free(reuse);
+    return 0;
+}</textarea><div class="runrow"><div style="flex:1"><label for="sourceLang">Langage (compilation native)</label><select id="sourceLang"><option value="c">C (gcc)</option><option value="cpp">C++17 (g++)</option></select></div><div style="flex:1"><label for="unknownBranch">Branche indécidable</label><select id="unknownBranch"><option value="skip">Ne pas prendre</option><option value="take">Prendre (hypothèse)</option></select></div></div><label for="sourceFile">Ou importer un fichier .c, .cpp, .h, .hpp</label><input id="sourceFile" type="file" accept=".c,.cpp,.cc,.cxx,.h,.hpp,.txt"><label for="sourceStdin">Entrées standard / menu (une réponse par ligne)</label><textarea id="sourceStdin" class="shortarea" spellcheck="false" placeholder="1
+3
+5
+1
+0"></textarea><label for="arg1">argv[1] · valeur de test</label><input id="arg1" value="AAAAAAAAAAAAAAAAAAAAAAAA" spellcheck="false"><label for="arg2">argv[2] · valeur de test</label><input id="arg2" value="" spellcheck="false"><div class="runrow"><button class="primary" id="sourceRun">Analyser + simuler</button><button id="demoBtn">Démo</button></div><div class="runrow"><button id="nativeSource">Exécuter C/C++ instrumenté</button><button id="asanSource">Tester avec ASan</button></div><label class="permission"><input type="checkbox" id="sourceConsent">J’autorise l’exécution locale de ce code sur mon Linux de labo</label><div class="note">Simulation statique bornée : suit main(), des fonctions, if/switch/boucles, certains structs et new/delete. Les appels inconnus, bibliothèques, macros conditionnelles et pointeurs complexes restent approximatifs. Le vrai programme n’est exécuté qu’en mode natif sur autorisation.</div></section>
+<section class="view" id="options"><h3>Options de programme → hypothèse de heap</h3>
+<p class="help">Une aide <span class="mono">--help</span> ne révèle pas les allocations internes. Décris les relations supposées entre les options et les opérations mémoire : le schéma obtenu sera explicitement <b>hypothétique</b>.</p>
+<label for="helpText">Aide / usage du programme (référence facultative)</label><textarea class="shortarea" id="helpText" spellcheck="false">Usage: target --size N --data TEXT [--free]
+  --size N      taille du buffer
+  --data TEXT   texte copié dans le buffer
+  --free        libérer le buffer</textarea>
+<label for="cliArgs">Ligne d'arguments à tester</label><input id="cliArgs" value="--size 24 --data AAAAAAAAAAAAAAAAAAAAAAAA --free" spellcheck="false">
+<label for="cliRules">Règles mémoire hypothétiques (variables $option)</label><textarea id="cliRules" spellcheck="false">A = malloc($size)
+B = malloc(32)
+strcpy(A, $data)
+free(A)</textarea>
+<div class="runrow"><button class="primary" id="optionsRun">Simuler ces options</button><button id="optionsPreset">Exemple</button></div>
+<div id="optionsNotice" class="note">Seules les règles que tu écris sont simulées : l’outil ne devine pas malloc à partir de --help.</div></section>
+<section class="view" id="script"><label for="scenario">Opérations (une par ligne)</label><textarea id="scenario" spellcheck="false">A = malloc(24)
+B = malloc(32)
+strcpy(A, "HELLO")
+free(A)
+C = malloc(16)
+fill(C, 0x41, 40)
+free(B)
+free(C)</textarea><div class="help">Syntaxes : <span class="mono">A = malloc(24)</span>, <span class="mono">B = calloc(4, 8)</span>, <span class="mono">A = realloc(A, 48)</span>, <span class="mono">free(A)</span>, <span class="mono">strcpy(A, argv[1])</span>, <span class="mono">write(A, "ABC")</span>, <span class="mono">fill(A, 0x41, 40)</span>, <span class="mono">memcpy(A, argv[1], 30)</span>.</div><div class="runrow"><button class="primary" id="scriptRun">Simuler le scénario</button><button id="resetScript">Réinitialiser</button><button id="loadOverflowExercise">Exercice A/B/C</button></div><div class="note">Les chunks suivent un modèle pédagogique inspiré de glibc 64 bits. Les adresses, les réutilisations et les bins sont simulés, pas observés dans un processus.</div></section>
+<section class="view" id="trace"><p class="help">Importe une trace JSON d'allocations existante. Chaque événement : <span class="mono">{"op":"malloc","var":"A","size":24}</span>, <span class="mono">{"op":"free","var":"A"}</span>, <span class="mono">{"op":"fill","var":"A","byte":65,"count":40}</span>.</p><label for="tracecode">Tableau JSON d'événements</label><textarea id="tracecode" spellcheck="false">[
+  {"op":"malloc","var":"A","size":24},
+  {"op":"malloc","var":"B","size":32},
+  {"op":"free","var":"A"},
+  {"op":"malloc","var":"C","size":16},
+  {"op":"fill","var":"C","byte":65,"count":40}
+]</textarea><label for="traceFile">Ou charger un fichier .json / .jsonl</label><input type="file" id="traceFile" accept=".json,.jsonl,.ndjson,application/json"><div class="runrow"><button class="primary" id="traceRun">Charger la trace</button><button id="exportBtn">Exporter JSON</button></div><p class="help">Trace d'événements logique (noms de pointeurs), pas dump brut de GDB.</p></section>
+<section class="view" id="elf"><h3>ELF Linux glibc x86-64</h3>
+<div id="serverState" class="info">Vérification du moteur local…</div><label for="elfFile">Sélectionner un exécutable ELF dynamique</label><input type="file" id="elfFile" accept=".elf,.bin,.out,application/octet-stream">
+<label for="elfArgs">Arguments à fournir (guillemets pris en charge)</label><input id="elfArgs" value="HELLO" spellcheck="false">
+<label class="permission"><input type="checkbox" id="elfConsent">J’autorise l’exécution du binaire localement dans ma VM / machine de labo</label>
+<div class="runrow"><button class="primary" id="elfRun">Exécuter et tracer</button><button id="elfDemo">Démo native</button></div>
+<div class="note"><b>Danger :</b> un ELF peut exécuter du code arbitraire. Limites de ressources ≠ bac à sable. Utiliser une VM isolée sans secrets et sans réseau pour les fichiers non fiables. Sans serveur Linux, utilise les autres onglets, toujours fonctionnels.</div>
+<p class="help">La trace native intercepte malloc/calloc/realloc/free, collecte des snapshots bornés aux appels interceptés et lit les champs de taille glibc. Elle ne surveille pas chaque instruction ni les bins internes.</p></section>
+</aside>
+<main><div class="sectionhead"><h2>Vue mémoire</h2><span class="tag" id="modeLabel">Simulation · glibc x64 simplifiée</span></div>
+<div class="metrics"><div class="metric"><div class="val" id="nAllocated">0</div><div class="label">Chunks actifs</div></div><div class="metric"><div class="val" id="nFreed">0</div><div class="label">Chunks libérés</div></div><div class="metric"><div class="val" id="nBytes">0 B</div><div class="label">Total demandé actif</div></div><div class="metric"><div class="val" id="nAlerts">0</div><div class="label">Alertes cumulées</div></div></div>
+<div class="timeline"><div class="timeline-top"><h2>Chronologie des opérations</h2><div class="runrow" style="margin:0"><button id="prev" title="Étape précédente">←</button><span id="position" class="mono" style="align-self:center">0 / 0</span><button id="next" title="Étape suivante">→</button></div></div><input type="range" id="slider" min="0" max="0" value="0" step="1"><div class="stepdesc" id="stepdesc">Lance une simulation pour commencer.</div></div>
+<div class="canvasbar"><h2>Chunks et contenu mémoire</h2><div class="legend"><span><i class="dot" style="background:var(--cyan)"></i>Alloué</span><span><i class="dot" style="background:var(--amber)"></i>Libéré</span><span><i class="dot" style="background:var(--red)"></i>Corrompu</span></div></div><div id="chunks" class="chunks"></div>
+<section class="panel inspector" aria-label="Inspection des structures de chunks" style="margin-top:18px">
+  <div class="sectionhead"><h2>Anatomie des chunks - glibc x86-64</h2><span class="tag" id="inspectorMode">Simulation</span></div>
+  <p class="help">Clique sur un chunk pour examiner chaque champ, les 16 octets d'en-tête, les données et la chaîne tcache simulée. Les octets modifiés par débordement sont signalés. Le modèle ne reproduit pas tous les bins, consolidations ou protections propres à chaque version de glibc.</p>
+  <div id="chunkStructure" class="structoverview"></div>
+  <div id="chunkDetail" class="structdetail"><div class="info">Lance une simulation puis choisis un chunk.</div></div>
+  <div id="tcacheBins" class="tcachebins"></div>
+</section>
+<div class="resultgrid"><div class="panel"><h3>Diagnostics mémoire</h3><div id="diagnostics" class="help">Aucun événement analysé.</div></div><div class="panel"><h3>Événements / allocations</h3><div id="events" class="events"></div></div></div>
+<div class="banner"><h3>Hypothèses et entrées de test</h3><div id="hypotheses" class="help">Le moteur indique les risques observables dans le scénario et propose des longueurs de test quand un argument est copié vers un tampon alloué.</div></div>
+<div id="nativeResult" class="panel" style="margin-top:18px;display:none"><h3>Exécution locale / sortie et diagnostic ASan</h3><pre id="nativeConsole" class="terminal"></pre></div>
+<div class="footer">HeapLab · Créé par <b>St0rn</b> de <b>Cybersecur’IT</b> · Code, options et scénarios : modèle hypothétique hors ligne. ELF + compilation C/C++ : observation locale Linux glibc, sur autorisation explicite. ASan : validation indépendante, layout différent. Les analyses ne démontrent pas la possibilité d’une exploitation.</div>
+</main></div>
+<script src="engine.js"></script>
+<script src="chunk_inspector.js"></script>
+<script src="app.js"></script>
+<script src="source_sim.js"></script>
+<script src="source_integration.js"></script>
+</body></html>

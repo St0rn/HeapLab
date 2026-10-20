@@ -1,0 +1,27 @@
+# 1. Réutilisation de chunk (tcache simplifié)
+A = malloc(24)
+B = malloc(32)
+free(A)
+C = malloc(16)
+strcpy(C, "TEST")
+
+# 2. Débordement par strncpy (remplissage jusqu'à n)
+A = malloc(16)
+B = malloc(32)
+strncpy(A, "AB", 24)
+
+# 3. Use-after-free (simulation de pointeur conservé)
+A = malloc(24)
+free(A)
+fill(A, 0x41, 8)
+
+# 4. strcat et capacité restante
+A = calloc(1, 16)
+strcpy(A, "HELLO")
+strcat(A, "_WORLD_OVERFLOW")
+
+# 5. realloc et réaffectation
+A = malloc(16)
+strcpy(A, "HELLO")
+A = realloc(A, 64)
+strcpy(A, "CONTENU_APRES_REALLOC")

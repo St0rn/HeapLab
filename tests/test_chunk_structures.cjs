@@ -1,0 +1,27 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const vm=require('node:vm');
+const root=path.resolve(__dirname,'..');
+const src=fs.readFileSync(path.join(root,'engine.js'),'utf8');
+const beforeUI=src.slice(0,src.indexOf('function load('));
+const ctx={document:{querySelectorAll:()=>[]},TextEncoder,console};
+vm.createContext(ctx);
+vm.runInContext(beforeUI+'\nthis.testRun=runEvents;this.testParse=parseScript;',ctx);
+function last(frames){return frames.at(-1).heap;}
+const scenario=`a = malloc(32)\nb = malloc(32)\nc = malloc(32)\nfill(a, 0x41, 50)\nfill(b, 0x42, 50)\nfill(c, 0x43, 50)\nfree(c)\nfree(b)\nfree(a)`;
+const ev=ctx.testParse(scenario).events;
+const frames=ctx.testRun(ev), end=last(frames);
+assert.equal(frames.length,8,'Arrêt de la simulation sur free(c) après size incohérente');
+assert.equal(end.chunks[1].data.slice(0,16).every(x=>x===0x41),true,'B header corrompu par A');
+assert.equal(end.chunks[2].data.slice(0,16).every(x=>x===0x42),true,'C header corrompu par B');
+assert.equal(end.chunks[2].damaged,true);
+assert.equal(end.chunks[2].freed,false,'Refuser de simuler un free glibc invalide');
+assert.ok(end.issues.some(i=>i.type==='invalid-free'));
+console.log('OK : overflow contigu A/B/C et arrêt sur en-tête invalide');
+const sane=ctx.testRun(ctx.testParse('a = malloc(32)\nb = malloc(32)\nc = malloc(32)\nfree(c)\nfree(b)\nfree(a)').events);
+const state=last(sane);const [a,b,c]=state.chunks;
+assert.ok(a.freed&&b.freed&&c.freed);
+assert.equal(a.tcacheNext,b.id);assert.equal(b.tcacheNext,c.id);assert.equal(c.tcacheNext,null);
+assert.ok(a.freeSeq>b.freeSeq&&b.freeSeq>c.freeSeq);
+console.log('OK : chaîne tcache LIFO A -> B -> C');
